@@ -84,8 +84,10 @@ export default class MyPlugin extends Plugin {
 		await plugin.default(Promise.resolve(wasmbin.default));
 		plugin.onload(this);
 
-		plugin.test()
+		let compiler = new plugin.Compiler("", )
 	}
+
+	
 
 	onunload() {
 
