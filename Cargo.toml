@@ -8,5 +8,32 @@ edition = "2018"
 crate-type = ["cdylib"]
 
 [dependencies]
-wasm-bindgen = "0.2"
-js-sys = "0.3.49"
+typst = "0.12"
+typst-render = "0.12"
+typst-svg = "0.12"
+typst-assets = {version = "0.12", features = ["fonts"]}
+comemo = "0.4"
+
+
+# Everything to do with wasm
+wasm-bindgen = "^0.2"
+js-sys = "^0.3"
+wasm-bindgen-futures = "^0.4"
+serde = { version = "1", features = ["derive"] }
+serde-wasm-bindgen = "^0.6"
+web-sys = { version = "^0.3", features = [
+    "console",
+    "Window",
+    "FontData",
+    "Blob",
+    "ImageData",
+] }
+console_error_panic_hook = "0.1.7"
+
+# Image handling
+fast_image_resize = "5.0.0"
+
+ariadne = "0.5.0"
+chrono = "0.4.30"
+parking_lot = "0.12.3"
+send_wrapper = "0.6.0"

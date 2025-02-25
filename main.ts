@@ -83,6 +83,8 @@ export default class MyPlugin extends Plugin {
 		// here's the Rust bit
 		await plugin.default(Promise.resolve(wasmbin.default));
 		plugin.onload(this);
+
+		plugin.test()
 	}
 
 	onunload() {
