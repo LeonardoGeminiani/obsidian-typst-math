@@ -4,12 +4,24 @@ import * as wasmbin from './pkg/obsidian_rust_plugin_bg.wasm';
 import { Compiler } from "./pkg/obsidian_rust_plugin.js";
 import { sign } from "crypto";
 
+interface svgBufferElement {
+    keyword: string,
+    output: string
+}
+
+const max_array_dim = 1000;
+
 export class typstCompiler {
+    svg_buffer: svgBufferElement[];
+    svg_buffer_free_at_index: number;
+
     compiler: Compiler;
     math_preamble: string = "#set page(margin: 0pt)\n#set align(horizon)\n#let colred(x) = text(fill: red, $#x$)";
     general_preamble: string = "#set text(fill: FILL, size: SIZE)\n#set page(width: auto, height: HEIGHT)";
 
     async init(root: string) {
+        this.svg_buffer = new Array<svgBufferElement>(max_array_dim);
+        this.svg_buffer_free_at_index = 0;
         
         // @ts-expect-error
         await rustTypst.default(Promise.resolve(wasmbin.default));
@@ -19,22 +31,50 @@ export class typstCompiler {
         customElements.define("typst-renderer", TypstRenderElement);
 
         TypstRenderElement.compile = (path: string, source: string, size: number, display: boolean, fontSize: number) => {
-            console.log("raara");
+            // console.log("raara");
             const dpr = window.devicePixelRatio;
             // * (72 / 96)
             const pxToPt = (px: number) => px.toString() + "pt"
             const sizing = `#let (HEIGHT, SIZE, THEME, FILL) = (${!display ? pxToPt(size) : "auto"}, ${pxToPt(fontSize)}, "${document.body.getCssPropertyValue("color-scheme")}", ${document.body.getCssPropertyValue("--text-normal")})`
-            return this.compileToTypst(
+
+            let keyword = `${sizing}\n${this.general_preamble}\n${source}`;
+
+            let ret = null;
+            for(let i = 0; i < max_array_dim; ++i){
+                if(this.svg_buffer[i] == undefined) continue;
+                if(this.svg_buffer[i].keyword == keyword){
+                    ret = this.svg_buffer[i].output;
+                    // console.log("out:");
+                    break;
+                }
+            }
+            
+            // console.log("ret", ret);
+
+            // console.log("eada")
+
+            if(ret !== null) return ret;
+
+            // console.log("compilation...")
+            ret = this.compileToTypst(
                 path,
-                `${sizing}\n${this.general_preamble}\n${source}`,
+                keyword,
                 size,
                 display
             )
+
+            if(ret != "")
+                this.svg_buffer[this.svg_buffer_free_at_index++] = {
+                    keyword: keyword, 
+                    output: ret
+                };
+
+            return ret;
         }
     }
 
     compileToTypst(path: string, source: string, size: number, display: boolean): string {
-        console.log(source)
+        // console.log(source)
         return this.compiler.compile_svg(source, path);
     }
 
@@ -69,7 +109,8 @@ export class typstCompiler {
         renderer.display = display
         renderer.math = math
 
-        console.log(renderer)
+        // console.log(renderer)
+
         return renderer
     }
 
