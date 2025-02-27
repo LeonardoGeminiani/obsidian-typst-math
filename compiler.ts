@@ -10,7 +10,7 @@ export class typstCompiler {
     general_preamble: string = "#set text(fill: white, size: SIZE)\n#set page(width: WIDTH, height: HEIGHT)";
 
     async init(root: string) {
-
+        
         // @ts-expect-error
         await rustTypst.default(Promise.resolve(wasmbin.default));
 
@@ -165,10 +165,10 @@ class TypstRenderElement extends HTMLElement {
                     this.innerHTML = result;
                     let svg = (this.firstElementChild as SVGElement);
 
-                    // let childToBeRemoved = svg.querySelector("path");
+                    let childToBeRemoved = svg.querySelector("path");
                     
-                    // if(childToBeRemoved !== null)
-                    //     svg.removeChild(childToBeRemoved);
+                    if(childToBeRemoved !== null)
+                        svg.removeChild(childToBeRemoved);
 
                     svg.setAttribute("width", svg.getAttribute("width")!.replace("pt", ""))
                     svg.setAttribute("height", svg.getAttribute("height")!.replace("pt", ""))
