@@ -2,6 +2,7 @@ import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Set
 
 import * as plugin from "./pkg/obsidian_rust_plugin.js";
 import * as wasmbin from './pkg/obsidian_rust_plugin_bg.wasm';
+import { typstCompiler } from 'compiler.js';
 
 // Remember to rename these classes and interfaces!
 
@@ -80,11 +81,8 @@ export default class MyPlugin extends Plugin {
 		// When registering intervals, this function will automatically clear the interval when the plugin is disabled.
 		this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
 
-		// here's the Rust bit
-		await plugin.default(Promise.resolve(wasmbin.default));
-		plugin.onload(this);
-
-		let compiler = new plugin.Compiler("", )
+		let compiler = new typstCompiler();
+		compiler.init(this);
 	}
 
 	
