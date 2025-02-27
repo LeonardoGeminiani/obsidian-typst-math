@@ -6,8 +6,8 @@ import { sign } from "crypto";
 
 export class typstCompiler {
     compiler: Compiler;
-    math_preamble: string = "#set page(margin: 0pt)\n#set align(horizon)";
-    general_preamble: string = "#set text(fill: white, size: SIZE)\n#set page(width: WIDTH, height: HEIGHT)";
+    math_preamble: string = "#set page(margin: 0pt)\n#set align(horizon)\n#let colred(x) = text(fill: red, $#x$)";
+    general_preamble: string = "#set text(fill: FILL, size: SIZE)\n#set page(width: WIDTH, height: HEIGHT)";
 
     async init(root: string) {
         
@@ -22,7 +22,7 @@ export class typstCompiler {
             const dpr = window.devicePixelRatio;
             // * (72 / 96)
             const pxToPt = (px: number) => px.toString() + "pt"
-            const sizing = `#let (WIDTH, HEIGHT, SIZE, THEME) = (${display ? pxToPt(size) : "auto"}, ${!display ? pxToPt(size) : "auto"}, ${pxToPt(fontSize)}, "${document.body.getCssPropertyValue("color-scheme")}")`
+            const sizing = `#let (WIDTH, HEIGHT, SIZE, THEME, FILL) = (${display ? pxToPt(size) : "auto"}, ${!display ? pxToPt(size) : "auto"}, ${pxToPt(fontSize)}, "${document.body.getCssPropertyValue("color-scheme")}", ${document.body.getCssPropertyValue("--text-normal")})`
             return this.compileToTypst(
                 path,
                 `${sizing}\n${this.general_preamble}\n${source}`,
@@ -33,7 +33,7 @@ export class typstCompiler {
     }
 
     compileToTypst(path: string, source: string, size: number, display: boolean): string {
-        console.log(source);
+        console.log(source)
         return this.compiler.compile_svg(source, path);
     }
 
