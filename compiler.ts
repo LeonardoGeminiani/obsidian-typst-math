@@ -7,7 +7,7 @@ import { sign } from "crypto";
 export class typstCompiler {
     compiler: Compiler;
     math_preamble: string = "#set page(margin: 0pt)\n#set align(horizon)\n#let colred(x) = text(fill: red, $#x$)";
-    general_preamble: string = "#set text(fill: FILL, size: SIZE)\n#set page(width: WIDTH, height: HEIGHT)";
+    general_preamble: string = "#set text(fill: FILL, size: SIZE)\n#set page(width: auto, height: HEIGHT)";
 
     async init(root: string) {
         
@@ -16,13 +16,14 @@ export class typstCompiler {
 
         this.compiler = new Compiler(root, this.requestData);
 
-        customElements.define("typst-renderer", TypstRenderElement)
+        customElements.define("typst-renderer", TypstRenderElement);
+
         TypstRenderElement.compile = (path: string, source: string, size: number, display: boolean, fontSize: number) => {
             console.log("raara");
             const dpr = window.devicePixelRatio;
             // * (72 / 96)
             const pxToPt = (px: number) => px.toString() + "pt"
-            const sizing = `#let (WIDTH, HEIGHT, SIZE, THEME, FILL) = (${display ? pxToPt(size) : "auto"}, ${!display ? pxToPt(size) : "auto"}, ${pxToPt(fontSize)}, "${document.body.getCssPropertyValue("color-scheme")}", ${document.body.getCssPropertyValue("--text-normal")})`
+            const sizing = `#let (HEIGHT, SIZE, THEME, FILL) = (${!display ? pxToPt(size) : "auto"}, ${pxToPt(fontSize)}, "${document.body.getCssPropertyValue("color-scheme")}", ${document.body.getCssPropertyValue("--text-normal")})`
             return this.compileToTypst(
                 path,
                 `${sizing}\n${this.general_preamble}\n${source}`,
@@ -76,13 +77,6 @@ export class typstCompiler {
         const display = r.display;
         source = `${this.math_preamble}\n${display ? `$ ${source} $` : `$${source}$`}`
 
-        // let svg = this.compiler.compile_svg(source, "/586f8912-f3a8-4455-8a4a-3729469c2cc1.typ");
-        // debugger;
-        // let el = document.createElement("span");
-        // let b = this.createTypstRenderElement("/586f8912-f3a8-4455-8a4a-3729469c2cc1.typ", source, display, true);
-        // el.innerHTML = svg;
-        // console.log("svddsf");
-        // return el;
         return this.createTypstRenderElement("/586f8912-f3a8-4455-8a4a-3729469c2cc1.typ", source, display, true)
     }
 

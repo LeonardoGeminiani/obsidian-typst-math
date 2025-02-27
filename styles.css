@@ -2,6 +2,11 @@
     vertical-align: bottom;
 }
 
+.math-block typst-renderer svg{
+    display: block;
+    margin: auto;
+}
+
 typst-renderer {
     display: inline-block;
 }
