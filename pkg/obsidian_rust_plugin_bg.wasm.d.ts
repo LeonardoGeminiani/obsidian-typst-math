@@ -4,7 +4,7 @@ export const memory: WebAssembly.Memory;
 export const __wbg_compiler_free: (a: number, b: number) => void;
 export const compiler_new: (a: number, b: number, c: any) => number;
 export const compiler_compile_image: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => [number, number, number];
-export const compiler_compile_svg: (a: number, b: number, c: number, d: number, e: number) => [number, number, number, number];
+export const compiler_compile_svg: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => [number, number, number, number];
 export const compiler_add_font: (a: number, b: number, c: number) => void;
 export const qcms_transform_data_rgb_out_lut_precache: (a: number, b: number, c: number, d: number) => void;
 export const qcms_transform_data_rgba_out_lut_precache: (a: number, b: number, c: number, d: number) => void;

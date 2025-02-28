@@ -73,9 +73,9 @@ esbuild.build({
     outfile: 'main.js',
     plugins: [
         wasmPlugin,
-        // wasmPack({
-        //     'target': 'web'
-        //     // put wasm-pack plugin options
-        // }),
+        wasmPack({
+            'target': 'web'
+            // put wasm-pack plugin options
+        }),
     ],
 }).catch(() => process.exit(1));

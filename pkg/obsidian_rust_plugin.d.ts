@@ -4,7 +4,7 @@ export class Compiler {
   free(): void;
   constructor(root: string, request_data: Function);
   compile_image(text: string, path: string, pixel_per_pt: number, size: number, display: boolean): ImageData;
-  compile_svg(text: string, path: string): string;
+  compile_svg(text: string, _key_word: string, path: string): string;
   add_font(data: Uint8Array): void;
 }
 
@@ -15,7 +15,7 @@ export interface InitOutput {
   readonly __wbg_compiler_free: (a: number, b: number) => void;
   readonly compiler_new: (a: number, b: number, c: any) => number;
   readonly compiler_compile_image: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => [number, number, number];
-  readonly compiler_compile_svg: (a: number, b: number, c: number, d: number, e: number) => [number, number, number, number];
+  readonly compiler_compile_svg: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => [number, number, number, number];
   readonly compiler_add_font: (a: number, b: number, c: number) => void;
   readonly qcms_transform_data_rgb_out_lut_precache: (a: number, b: number, c: number, d: number) => void;
   readonly qcms_transform_data_rgba_out_lut_precache: (a: number, b: number, c: number, d: number) => void;
