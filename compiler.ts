@@ -3,6 +3,7 @@ import * as rustTypst from "./pkg/obsidian_rust_plugin.js";
 import * as wasmbin from './pkg/obsidian_rust_plugin_bg.wasm';
 import { Compiler } from "./pkg/obsidian_rust_plugin.js";
 import { sign } from "crypto";
+import { resolve } from "path";
 
 // interface svgBufferElement {
 //     keyword: string,
@@ -204,7 +205,9 @@ class TypstRenderElement extends HTMLElement {
                 }
 
                 try {
-                    let result = await TypstRenderElement.compile(this.path, this.source, this.size, this.display, fontSize)
+                    let result: string = await new Promise((resolve) => {
+                        resolve(TypstRenderElement.compile(this.path, this.source, this.size, this.display, fontSize))
+                    });
 
                     this.innerHTML = result;
                     let svg = (this.firstElementChild as SVGElement);
