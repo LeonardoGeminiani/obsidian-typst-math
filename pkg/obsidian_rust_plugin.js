@@ -116,11 +116,6 @@ function isLikeNone(x) {
     return x === undefined || x === null;
 }
 
-function getArrayU8FromWasm0(ptr, len) {
-    ptr = ptr >>> 0;
-    return getUint8ArrayMemory0().subarray(ptr / 1, ptr / 1 + len);
-}
-
 function takeFromExternrefTable0(idx) {
     const value = wasm.__wbindgen_export_2.get(idx);
     wasm.__externref_table_dealloc(idx);
@@ -279,9 +274,6 @@ function __wbg_get_imports() {
         const ret = arg0.getTimezoneOffset();
         return ret;
     };
-    imports.wbg.__wbg_log_c222819a41e063d3 = function(arg0) {
-        console.log(arg0);
-    };
     imports.wbg.__wbg_new0_f788a2397c7ca929 = function() {
         const ret = new Date();
         return ret;
@@ -339,12 +331,6 @@ function __wbg_get_imports() {
     };
     imports.wbg.__wbindgen_throw = function(arg0, arg1) {
         throw new Error(getStringFromWasm0(arg0, arg1));
-    };
-    imports.wbg.__wbindgen_uint8_array_new = function(arg0, arg1) {
-        var v0 = getArrayU8FromWasm0(arg0, arg1).slice();
-        wasm.__wbindgen_free(arg0, arg1 * 1, 1);
-        const ret = v0;
-        return ret;
     };
 
     return imports;

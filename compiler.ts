@@ -83,9 +83,11 @@ export class typstCompiler {
         }
     }
 
-    compileToTypst(path: string, source: string, keyword: string): string {
+    async compileToTypst(path: string, source: string, keyword: string): Promise<string> {
         // console.log(source)
-        return this.compiler.compile_svg(source, keyword, path);
+        return await navigator.locks.request("typst render compiler", async (lock) => {
+            return this.compiler.compile_svg(source, keyword, path);
+        })
     }
 
     decoder = new TextDecoder()
@@ -134,7 +136,7 @@ export class typstCompiler {
 }
 
 class TypstRenderElement extends HTMLElement {
-    static compile: (path: string, source: string, size: number, display: boolean, fontSize: number) => string
+    static compile: (path: string, source: string, size: number, display: boolean, fontSize: number) => Promise<string>
     static nextId = 0;
     static prevHeight = 0;
 
@@ -205,10 +207,7 @@ class TypstRenderElement extends HTMLElement {
                 }
 
                 try {
-                    let result: string = await new Promise((resolve) => {
-                        resolve(TypstRenderElement.compile(this.path, this.source, this.size, this.display, fontSize))
-                    });
-
+                    let result: string = await TypstRenderElement.compile(this.path, this.source, this.size, this.display, fontSize);
                     this.innerHTML = result;
                     let svg = (this.firstElementChild as SVGElement);
 

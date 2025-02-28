@@ -115,18 +115,18 @@ impl Compiler {
         let copy_len = vec.len().min(KEY_WORD_MAX);
         fixed_len_array[..copy_len].copy_from_slice(&vec[..copy_len]);
 
-        let log = fixed_len_array.to_vec();
-        console::log_1(&JsValue::from(log));
+        // let log = fixed_len_array.to_vec();
+        // console::log_1(&JsValue::from(log));
 
         if vec.len() <= KEY_WORD_MAX {
             // optimize
-            console::log_1(&"optimize".into());
+            // console::log_1(&"optimize".into());
 
             for el in self.svg_buff.iter() {
                 let ver_cmp = el.key_word;
 
                 if ver_cmp.eq(&fixed_len_array) {
-                    console::log_1(&"optimiZEED!".into());
+                    // console::log_1(&"optimiZEED!".into());
                     return Ok(el.output.clone());
                 }
             }
@@ -144,7 +144,7 @@ impl Compiler {
             });
         }
 
-        console::log_1(&"compiled!".into());
+        // console::log_1(&"compiled!".into());
 
         return ret;
     }
